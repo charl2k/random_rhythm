@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Rhythm</title>
+</head>
+<body>
+    <div id="score">
+        <div class="bar">
+            <img src="" alt="">
+        </div>
+    </div>
+</body>
+<script>
+    /**
+         * Get the URL parameter value
+         *
+         * @param  name {string} パラメータのキー文字列
+         * @return  url {url} 対象のURL文字列（任意）
+         */
+    function getParam(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    var barnum = getParam('bar');//何小節生成する？
+    if(barnum==null||barnum=='') barnum = 4;
+    var score = document.getElementById('score');
+    score.textContent = null;
+    for(var j = 0; j < barnum; j++){
+        var bar = document.createElement('div');
+        bar.classList.add('bar');
+        for(var i = 0; i < 4; i++){
+            var random = Math.floor(Math.random() * 16);
+            random = random.toString(2);
+            var notes = document.createElement('img');
+            notes.setAttribute('src', 'img/'+ ('0000' + random).slice(-4)+'.svg');
+            bar.appendChild(notes);
+        }
+        score.appendChild(bar);
+    }
+</script>
+<style>
+    div{
+        margin: 0;
+        padding: 0;
+    }
+    #score{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .bar{
+        width: 300px;
+        padding: 0 8px;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        margin: 8px -0.5px;
+    }
+    .bar img{
+        width: 25%;
+    }
+</style>
+</html>
